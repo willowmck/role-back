@@ -2,7 +2,7 @@ import 'dotenv/config';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import KcAdminClient from 'keycloak-admin';
-import { keycloakConfig } from '../config/keycloak';
+import { keycloakConfig } from './config/keycloak';
 import * as rateLimit from 'express-rate-limit';
 import { userRoute, User } from './routes/users';
 // import * as Keycloak from "keycloak-connect"
