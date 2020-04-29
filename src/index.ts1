@@ -1,0 +1,70 @@
+// Root 
+import "dotenv/config"
+import * as express from 'express'
+import * as bodyParser from 'body-parser'
+import KcAdminClient from 'keycloak-admin'
+import { keycloakConfig } from "../config/keycloak"
+import * as Keycloak from "keycloak-connect"
+import * as session from "express-session"
+import * as cookieParser from 'cookie-parser'
+import * as rateLimit from "express-rate-limit"
+import { userRoute, User } from "./routes/users"
+
+export const kcAdminClient = new KcAdminClient(keycloakConfig);
+
+export const start = async () => await kcAdminClient.auth({
+  username: process.env.USERNAME,
+  password: process.env.PASSWORD,
+  grantType: "password",
+  clientId: "admin-cli"
+})
+
+//const memoryStore = new session.MemoryStore();
+//const keycloak = new Keycloak({ store: memoryStore }, keycloakConfig)
+
+const app: any = express();
+
+app.use(
+  rateLimit({
+    windowMs: 5 * 60 * 1000,
+    max: 100 // 100 requests per 5 minute window
+  })
+)
+app.use(bodyParser.urlencoded({
+  limit: '50kb'
+}))
+// app.use(cookieParser())
+// app.use('trust proxy', 1)
+// app.use({
+//   secret: "envvar",
+//   resave: false,
+//   saveUninitialized: true,
+//   store: memoryStore
+// })
+// app.use(keycloak.middleware())
+// app.use(keycloak.middleware({ logout: "/logout" }))
+
+
+// app.get('/', async (req: any, res: any): Promise<any> => {
+//   try {
+//     let users = await kcAdminClient.users.find()
+//     await kcAdminClient.users.create({
+//       realm: 'whitelist',
+//       username: 'johnsmith2',
+//       email: 'john2@smith.com'
+//     });
+//     res.send(JSON.stringify(users, undefined, 2))
+//   }
+//   catch (e) {
+//     console.log(`${e.message}`)
+//     res.send(e.message);
+//   }
+// })
+app.use('/users', bodyParser(), userRoute(new User()))
+
+app.listen(process.env.PORT, async () => {
+  await start();
+  kcAdminClient.setConfig({
+    realmName: 'whitelist',
+  });
+})

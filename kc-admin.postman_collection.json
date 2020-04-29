@@ -1,0 +1,53 @@
+{
+	"variables": [],
+	"info": {
+		"name": "kc-admin",
+		"_postman_id": "619493f5-4f1f-befa-74f0-09c950f7d9c9",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:3333/users/get",
+			"request": {
+				"url": "http://localhost:3333/users/get",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3333/users/create",
+			"request": {
+				"url": "http://localhost:3333/users/create",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"realm\":\"whitelist\",\n\t\"username\":\"cwylie@redhat.com\",\n\t\"email\":\"cwylie@redhat.com\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3333/users/get/whitelist/test@test.com",
+			"request": {
+				"url": "http://localhost:3333/users/get/whitelist/test@test.com",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
