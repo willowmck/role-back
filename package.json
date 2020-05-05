@@ -9,7 +9,10 @@
     "clean": "rm -rf ./dist",
     "lint": "eslint . --ext ts",
     "test": "jest --watchAll --coverage --silent",
-    "start": "npm run build && node dist/index.js"
+    "start": "npm run build && node dist/index.js",
+    "keycloak:start": "docker start keycloak",
+    "keycloak:create": "./scripts/create-keycloak",
+    "keycloak:kill": "docker kill keycloak"
   },
   "author": "Case Wylie",
   "license": "ISC",
